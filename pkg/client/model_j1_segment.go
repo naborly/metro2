@@ -20,7 +20,7 @@ type J1Segment struct {
 	FirstName                    string    `json:"firstName"`
 	MiddleName                   string    `json:"middleName,omitempty"`
 	GenerationCode               string    `json:"generationCode,omitempty"`
-	SocialSecurityNumber         int32     `json:"socialSecurityNumber"`
+	SocialSecurityNumber         int32     `json:"socialSecurityNumber,omitempty"`
 	DateBirth                    time.Time `json:"dateBirth"`
 	TelephoneNumber              int64     `json:"telephoneNumber,omitempty"`
 	EcoaCode                     string    `json:"ecoaCode"`

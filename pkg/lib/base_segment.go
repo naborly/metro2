@@ -47,6 +47,11 @@ type BaseSegment struct {
 	// Format is MMDDYYYYHHMMSS for character date.
 	TimeStamp time.Time `json:"timeStamp"`
 
+	// Used to replace the most recently reported update for the same reporting time period. Values available: 
+	//  0 = Not a replacement update (normal update) 
+	//  1 = Replacement update (correction) 
+	CorrectionIndicator string `json:"correctionIndicator" validate:"required"`
+
 	// Used to uniquely identify a data furnisher.
 	// Report your internal code to identify each branch, office, and/or credit central where information is verified.
 	// For accounts reported by servicers, the Identification Number should refer to the current holder of the note.
@@ -78,6 +83,7 @@ type BaseSegment struct {
 	//  M = Mortgage
 	//  O = Open
 	//  R = Revolving
+	//  L = Lease
 	//
 	// Refer to the Glossary of Terms for definitions of each Portfolio Type.
 	PortfolioType string `json:"portfolioType"`
@@ -380,7 +386,7 @@ type BaseSegment struct {
 	//   If the Social Security Number is not reported, the Date of Birth is required to be reported.
 	//   Do not report Individual Tax Identification Numbers  (ITINs) in this field.  ITINs do not prove identity outside the tax system and should not be offered or accepted as identification for non-tax purposes, per the Social Security Administration.
 	//   Do not report Credit Profile Numbers (CPNs) in this field.  The CPN should not be used for credit reporting purposes and does not replace the Social Security Number.
-	SocialSecurityNumber int `json:"socialSecurityNumber" validate:"required"`
+	SocialSecurityNumber int `json:"socialSecurityNumber"`
 
 	// Report the full Date of Birth of the primary consumer, including the month, day and year.
 	// Reporting of this information is required as the Date of Birth greatly enhances accuracy in matching to the correct consumer.
@@ -393,6 +399,20 @@ type BaseSegment struct {
 
 	// Contains the telephone number of the primary consumer (Area Code + 7 digits).
 	TelephoneNumber int64 `json:"telephoneNumber"`
+
+	// This is used to report the relationship/ownership of the primary consumer to the account.
+	// ** Required field for Canada
+	// 	1 = Individual
+	//  2 = Joint
+	//  4 = Joint
+	//  7 = Has a co-signer
+	//  9 = Has a guarantor
+	//  A = Assumed Mortgage
+	//  T = Terminated
+	//  W = Commercial account
+	//  X = Consumer deceased
+	//  Z = Delete
+	AssociationCode string `json:"associationCode"`
 
 	// Defines the relationship of the primary consumer to the account and designates the account as joint, individual, etc., in compliance with the Equal Credit Opportunity Act.
 	//
@@ -459,10 +479,11 @@ type BaseSegment struct {
 	// Exhibit 14 provides a list of State Codes.
 	State string `json:"state" validate:"required"`
 
-	// Report the Zip Code of the primary consumer’s address.
+	// Report the Zip/Postal Code of the primary consumer’s address.
 	// Use entire field if reporting 9-digit zip codes.
 	// Otherwise, leftjustify and blank fill.
 	ZipCode string `json:"zipCode" validate:"required"`
+	PostalCode string `json:"postalCode" validate:"required"`
 
 	// Contains one of the following values for the address reported in fields 40-44:
 	//
@@ -801,9 +822,33 @@ func (r *BaseSegment) ValidateIdentificationNumber() error {
 	return nil
 }
 
+func (r *BaseSegment) ValidateZipCode() error {
+	if r.CountryCode == "US" {
+		if len(r.ZipCode) == 0 {
+			return utils.NewErrFieldRequired("zip code", "base segment")
+		} 
+		if len(r.PostalCode) > 0 {
+			return utils.NewErrApplicableSegment("postal code", "base segment")
+		}
+	}
+	return nil
+}
+
+func (r *BaseSegment) ValidatePostalCode() error {
+	if r.CountryCode == "CA" {
+		if len(r.PostalCode) == 0 {
+			return utils.NewErrFieldRequired("postal code", "base segment")
+		} 
+		if len(r.ZipCode) > 0 {
+			return utils.NewErrApplicableSegment("zip code", "base segment")
+		}
+	}
+	return nil
+}
+
 func (r *BaseSegment) ValidatePortfolioType() error {
 	switch r.PortfolioType {
-	case PortfolioTypeCredit, PortfolioTypeInstallment, PortfolioTypeMortgage, PortfolioTypeOpen, PortfolioTypeRevolving:
+	case PortfolioTypeCredit, PortfolioTypeInstallment, PortfolioTypeMortgage, PortfolioTypeOpen, PortfolioTypeRevolving, PortfolioTypeLease:
 		return nil
 	}
 	return utils.NewErrInvalidValueOfField("portfolio type", "base segment")
@@ -879,6 +924,16 @@ func (r *BaseSegment) ValidateTelephoneNumber() error {
 		return err
 	}
 	return nil
+}
+
+func (r *BaseSegment) ValidateAssociationCode() error {
+	switch r.AssociationCode {
+	case AssociationCodeIndividual, AssociationCodeJoint,	AssociationCodeJoint2, AssociationCodeCoSigner,
+		AssociationCodeGuarantor,	AssociationCodeAssumedMortgage, AssociationCodeTerminated, 
+		AssociationCodeCommercialAccount, AssociationCodeConsumerDeceased, AssociationCodeDelete:
+		return nil
+	}
+	return utils.NewErrInvalidValueOfField("association code", "base segment")
 }
 
 // Name returns name of packed base segment
@@ -1221,9 +1276,33 @@ func (r *PackedBaseSegment) ValidateIdentificationNumber() error {
 	return nil
 }
 
+func (r *PackedBaseSegment) ValidateZipCode() error {
+	if r.CountryCode == "US" {
+		if len(r.ZipCode) == 0 {
+			return utils.NewErrFieldRequired("zip code", "base segment")
+		} 
+		if len(r.PostalCode) > 0 {
+			return utils.NewErrApplicableSegment("postal code", "base segment")
+		}
+	}
+	return nil
+}
+
+func (r *PackedBaseSegment) ValidatePostalCode() error {
+	if r.CountryCode == "CA" {
+		if len(r.PostalCode) == 0 {
+			return utils.NewErrFieldRequired("postal code", "base segment")
+		} 
+		if len(r.ZipCode) > 0 {
+			return utils.NewErrApplicableSegment("zip code", "base segment")
+		}
+	}
+	return nil
+}
+
 func (r *PackedBaseSegment) ValidatePortfolioType() error {
 	switch r.PortfolioType {
-	case PortfolioTypeCredit, PortfolioTypeInstallment, PortfolioTypeMortgage, PortfolioTypeOpen, PortfolioTypeRevolving:
+	case PortfolioTypeCredit, PortfolioTypeInstallment, PortfolioTypeMortgage, PortfolioTypeOpen, PortfolioTypeRevolving, PortfolioTypeLease:
 		return nil
 	}
 	return utils.NewErrInvalidValueOfField("portfolio type", "packed base segment")
@@ -1299,6 +1378,16 @@ func (r *PackedBaseSegment) ValidateTelephoneNumber() error {
 		return err
 	}
 	return nil
+}
+
+func (r *PackedBaseSegment) ValidateAssociationCode() error {
+	switch r.AssociationCode {
+	case AssociationCodeIndividual, AssociationCodeJoint,	AssociationCodeJoint2, AssociationCodeCoSigner,
+		AssociationCodeGuarantor,	AssociationCodeAssumedMortgage, AssociationCodeTerminated, 
+		AssociationCodeCommercialAccount, AssociationCodeConsumerDeceased, AssociationCodeDelete:
+		return nil
+	}
+	return utils.NewErrInvalidValueOfField("association code", "base segment")
 }
 
 func readApplicableSegments(record string, f Record) (int, error) {

@@ -425,6 +425,11 @@ components:
         timeStamp:
           format: date-time
           type: string
+        correctionIndicator:
+          type: string
+          enum:
+            - 0
+            - 1
         identificationNumber:
           type: string
         cycleIdentifier:
@@ -438,6 +443,7 @@ components:
           - M
           - O
           - R
+          - L
           type: string
         accountType:
           type: string
@@ -583,6 +589,19 @@ components:
         telephoneNumber:
           format: int64
           type: integer
+        associationCode:
+           type: string
+           enum:
+            - 1
+            - 2
+            - 4
+            - 7
+            - 9
+            - A
+            - T
+            - W
+            - X
+            - Z
         ecoaCode:
           type: string
         consumerInformationIndicator:
@@ -598,6 +617,8 @@ components:
         state:
           type: string
         zipCode:
+          type: string
+        postalCode:
           type: string
         addressIndicator:
           enum:
@@ -630,11 +651,9 @@ components:
       - identificationNumber
       - paymentHistoryProfile
       - recordDescriptorWord
-      - socialSecurityNumber
       - state
       - surname
       - termsDuration
-      - zipCode
     J1Segment:
       properties:
         segmentIdentifier:
@@ -671,7 +690,6 @@ components:
       - ecoaCode
       - firstName
       - segmentIdentifier
-      - socialSecurityNumber
       - surname
     J2Segment:
       properties:
@@ -740,7 +758,6 @@ components:
       - firstLineAddress
       - firstName
       - segmentIdentifier
-      - socialSecurityNumber
       - state
       - surname
       - zipCode
