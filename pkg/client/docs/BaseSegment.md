@@ -39,6 +39,7 @@ Name | Type | Description | Notes
 **SocialSecurityNumber** | **int32** |  | 
 **DateBirth** | [**time.Time**](time.Time.md) |  | 
 **TelephoneNumber** | **int64** |  | [optional] 
+**AssociationCode** | **string** |  | [Canada Only]
 **EcoaCode** | **string** |  | 
 **ConsumerInformationIndicator** | **string** |  | [optional] 
 **CountryCode** | **string** |  | [optional] 

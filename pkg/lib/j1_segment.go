@@ -69,7 +69,7 @@ type J1Segment struct {
 	//   per the Social Security Administration.
 	//  Do not report Credit Profile Numbers (CPNs) in this field.
 	//  The CPN should not be used for credit reporting purposes and does not replace the Social Security Number.
-	SocialSecurityNumber int `json:"socialSecurityNumber"  validate:"required"`
+	SocialSecurityNumber int `json:"socialSecurityNumber"`
 
 	// Report the full Date of Birth of the associated consumer, including the month, day and year.
 	// Reporting of this information is required as the Date of Birth greatly enhances accuracy in matching to the correct consumer.

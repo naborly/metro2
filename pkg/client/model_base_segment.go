@@ -47,9 +47,10 @@ type BaseSegment struct {
 	FirstName                     string    `json:"firstName"`
 	MiddleName                    string    `json:"middleName,omitempty"`
 	GenerationCode                string    `json:"generationCode,omitempty"`
-	SocialSecurityNumber          int32     `json:"socialSecurityNumber"`
+	SocialSecurityNumber          int32     `json:"socialSecurityNumber,omitempty"`
 	DateBirth                     time.Time `json:"dateBirth"`
 	TelephoneNumber               int64     `json:"telephoneNumber,omitempty"`
+	AssociationCode               string    `json:"associationCode"`
 	EcoaCode                      string    `json:"ecoaCode"`
 	ConsumerInformationIndicator  string    `json:"consumerInformationIndicator,omitempty"`
 	CountryCode                   string    `json:"countryCode,omitempty"`
@@ -58,6 +59,7 @@ type BaseSegment struct {
 	City                          string    `json:"city,omitempty"`
 	State                         string    `json:"state"`
 	ZipCode                       string    `json:"zipCode"`
+	PostalCode                    string    `json:"postalCode`
 	AddressIndicator              string    `json:"addressIndicator,omitempty"`
 	ResidenceCode                 string    `json:"residenceCode,omitempty"`
 }

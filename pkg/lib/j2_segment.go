@@ -69,7 +69,7 @@ type J2Segment struct {
 	//   per the Social Security Administration.
 	//  Do not report Credit Profile Numbers (CPNs) in this field.
 	//  The CPN should not be used for credit reporting purposes and does not replace the Social Security Number.
-	SocialSecurityNumber int `json:"socialSecurityNumber" validate:"required"`
+	SocialSecurityNumber int `json:"socialSecurityNumber"`
 
 	// Report the full Date of Birth of the associated consumer, including the month, day and year.
 	// Reporting of this information is required as the Date of Birth greatly enhances accuracy in matching to the correct consumer.
@@ -130,9 +130,10 @@ type J2Segment struct {
 	// Contains the standard U.S. Postal Service state abbreviation for the address of the associated consumer.
 	State string `json:"state"  validate:"required"`
 
-	// Report the Zip Code of the associated consumer’s address.
+	// Report the Zip/Postal Code of the associated consumer’s address.
 	// Use entire field if reporting 9-digit zip codes. Otherwise, leftjustify and blank fill.
 	ZipCode string `json:"zipCode"  validate:"required"`
+	PostalCode string `json:"postalCode"  validate:"required"`
 
 	// Contains one of the following values for the address
 	// C = Confirmed/Verified address
@@ -204,6 +205,30 @@ func (s *J2Segment) Validate() error {
 // Length returns size of segment
 func (s *J2Segment) Length() int {
 	return J2SegmentLength
+}
+
+func (s *J2Segment) ValidateZipCode() error {
+	if s.CountryCode == "US" {
+		if len(s.ZipCode) == 0 {
+			return utils.NewErrFieldRequired("zip code", "base segment")
+		} 
+		if len(s.PostalCode) > 0 {
+			return utils.NewErrApplicableSegment("postal code", "base segment")
+		}
+	}
+	return nil
+}
+
+func (s *J2Segment) ValidatePostalCode() error {
+	if s.CountryCode == "CA" {
+		if len(s.PostalCode) == 0 {
+			return utils.NewErrFieldRequired("postal code", "base segment")
+		} 
+		if len(s.ZipCode) > 0 {
+			return utils.NewErrApplicableSegment("zip code", "base segment")
+		}
+	}
+	return nil
 }
 
 // validation of generation code

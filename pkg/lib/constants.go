@@ -20,6 +20,8 @@ const (
 	PortfolioTypeOpen = "O"
 	// type of portfolio, Revolving
 	PortfolioTypeRevolving = "R"
+	// type of portfolio, Lease
+	PortfolioTypeLease = "L"
 	// duration of credit extended, Line of Credit
 	TermsDurationCredit = "LOC"
 	// duration of credit extended, Open
@@ -249,6 +251,26 @@ const (
 	SpecializedBalloonPayment = 1
 	// Specialized Payment Indicator Deferred Payment
 	SpecializedDeferredPayment = 2
+	// Association Code Individual
+	AssociationCodeIndividual = "1"
+	// Association Code Joint
+	AssociationCodeJoint = "2"
+	// Association Code Joint2
+	AssociationCodeJoint2 = "4"
+	// Association Code Has a Co-signer
+	AssociationCodeCoSigner = "7"
+	// Association Code Has a guarantor
+	AssociationCodeGuarantor = "9"
+	// Association Code Assumed Mortgage
+	AssociationCodeAssumedMortgage = "A"
+	// Association Code Terminated
+	AssociationCodeTerminated = "T"
+	// Association Code Commercial Account
+	AssociationCodeCommercialAccount = "W"
+	// Association Code Consumer Deceased
+	AssociationCodeConsumerDeceased = "X"
+	// Association Code Delete
+	AssociationCodeDelete = "Z"
 	// ECOA Code Z
 	ECOACodeZ = "Z"
 )
