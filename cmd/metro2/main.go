@@ -209,6 +209,9 @@ var rootCmd = &cobra.Command{
 
 func initRootCmd() {
 	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "8080"
+	}
 	WebCmd.Flags().String("port", port, "port of the web server")
 	WebCmd.Flags().BoolP("test", "t", false, "test server")
 	Convert.Flags().String("format", "json", "format of metro file(required)")
