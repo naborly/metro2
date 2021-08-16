@@ -589,9 +589,9 @@ components:
         telephoneNumber:
           format: int64
           type: integer
-        associationCode:
-           type: string
-           enum:
+        ecoaCode:
+          type: string
+          enum:
             - 1
             - 2
             - 4
@@ -602,8 +602,6 @@ components:
             - W
             - X
             - Z
-        ecoaCode:
-          type: string
         consumerInformationIndicator:
           type: string
         countryCode:

@@ -400,8 +400,17 @@ type BaseSegment struct {
 	// Contains the telephone number of the primary consumer (Area Code + 7 digits).
 	TelephoneNumber int64 `json:"telephoneNumber"`
 
-	// This is used to report the relationship/ownership of the primary consumer to the account.
-	// ** Required field for Canada
+	// Defines the relationship of the primary consumer to the account and designates the account as joint, individual, etc., in compliance with the Equal Credit Opportunity Act.
+	//
+	// Exhibit 10 provides a list of ECOA Codes, their definitions and usage.
+	//
+	// For important information:
+	// • Guidelines on reporting consumers who are personally liable for business accounts.
+	// • Usage guidelines on ECOA Codes T (Terminated) and Z (Delete Consumer).
+	//
+	// Note: Codes 0 (Undesignated), 4 (Joint) and 6 (On-Behalf-Of) are obsolete as of September 2003 and may no longer be reported.
+	//
+	// Association Code in Canada
 	// 	1 = Individual
 	//  2 = Joint
 	//  4 = Joint
@@ -412,17 +421,6 @@ type BaseSegment struct {
 	//  W = Commercial account
 	//  X = Consumer deceased
 	//  Z = Delete
-	AssociationCode string `json:"associationCode"`
-
-	// Defines the relationship of the primary consumer to the account and designates the account as joint, individual, etc., in compliance with the Equal Credit Opportunity Act.
-	//
-	// Exhibit 10 provides a list of ECOA Codes, their definitions and usage.
-	//
-	// For important information:
-	// • Guidelines on reporting consumers who are personally liable for business accounts.
-	// • Usage guidelines on ECOA Codes T (Terminated) and Z (Delete Consumer).
-	//
-	// Note: Codes 0 (Undesignated), 4 (Joint) and 6 (On-Behalf-Of) are obsolete as of September 2003 and may no longer be reported.
 	ECOACode string `json:"ecoaCode" validate:"required"`
 
 	// Contains a value that indicates a special condition of the account that applies to the primary consumer.
@@ -926,11 +924,11 @@ func (r *BaseSegment) ValidateTelephoneNumber() error {
 	return nil
 }
 
-func (r *BaseSegment) ValidateAssociationCode() error {
-	switch r.AssociationCode {
-	case AssociationCodeIndividual, AssociationCodeJoint,	AssociationCodeJoint2, AssociationCodeCoSigner,
-		AssociationCodeGuarantor,	AssociationCodeAssumedMortgage, AssociationCodeTerminated, 
-		AssociationCodeCommercialAccount, AssociationCodeConsumerDeceased, AssociationCodeDelete:
+func (r *BaseSegment) ValidateECOACode() error {
+	switch r.ECOACode {
+	case ECOACodeIndividual, ECOACodeJoint,	ECOACodeJoint2, ECOACodeCoSigner,
+		ECOACodeGuarantor,	ECOACodeAssumedMortgage, ECOACodeTerminated, 
+		ECOACodeCommercialAccount, ECOACodeConsumerDeceased, ECOACodeDelete:
 		return nil
 	}
 	return utils.NewErrInvalidValueOfField("association code", "base segment")
@@ -1380,11 +1378,11 @@ func (r *PackedBaseSegment) ValidateTelephoneNumber() error {
 	return nil
 }
 
-func (r *PackedBaseSegment) ValidateAssociationCode() error {
-	switch r.AssociationCode {
-	case AssociationCodeIndividual, AssociationCodeJoint,	AssociationCodeJoint2, AssociationCodeCoSigner,
-		AssociationCodeGuarantor,	AssociationCodeAssumedMortgage, AssociationCodeTerminated, 
-		AssociationCodeCommercialAccount, AssociationCodeConsumerDeceased, AssociationCodeDelete:
+func (r *PackedBaseSegment) ValidateECOACode() error {
+	switch r.ECOACode {
+	case ECOACodeIndividual, ECOACodeJoint,	ECOACodeJoint2, ECOACodeCoSigner,
+		ECOACodeGuarantor,	ECOACodeAssumedMortgage, ECOACodeTerminated, 
+		ECOACodeCommercialAccount, ECOACodeConsumerDeceased, ECOACodeDelete:
 		return nil
 	}
 	return utils.NewErrInvalidValueOfField("association code", "base segment")
