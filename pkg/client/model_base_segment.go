@@ -50,7 +50,6 @@ type BaseSegment struct {
 	SocialSecurityNumber          int32     `json:"socialSecurityNumber,omitempty"`
 	DateBirth                     time.Time `json:"dateBirth"`
 	TelephoneNumber               int64     `json:"telephoneNumber,omitempty"`
-	AssociationCode               string    `json:"associationCode"`
 	EcoaCode                      string    `json:"ecoaCode"`
 	ConsumerInformationIndicator  string    `json:"consumerInformationIndicator,omitempty"`
 	CountryCode                   string    `json:"countryCode,omitempty"`

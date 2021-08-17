@@ -252,25 +252,25 @@ const (
 	// Specialized Payment Indicator Deferred Payment
 	SpecializedDeferredPayment = 2
 	// Association Code Individual
-	AssociationCodeIndividual = "1"
+	ECOACodeIndividual = "1"
 	// Association Code Joint
-	AssociationCodeJoint = "2"
+	ECOACodeJoint = "2"
 	// Association Code Joint2
-	AssociationCodeJoint2 = "4"
+	ECOACodeJoint2 = "4"
 	// Association Code Has a Co-signer
-	AssociationCodeCoSigner = "7"
+	ECOACodeCoSigner = "7"
 	// Association Code Has a guarantor
-	AssociationCodeGuarantor = "9"
+	ECOACodeGuarantor = "9"
 	// Association Code Assumed Mortgage
-	AssociationCodeAssumedMortgage = "A"
+	ECOACodeAssumedMortgage = "A"
 	// Association Code Terminated
-	AssociationCodeTerminated = "T"
+	ECOACodeTerminated = "T"
 	// Association Code Commercial Account
-	AssociationCodeCommercialAccount = "W"
+	ECOACodeCommercialAccount = "W"
 	// Association Code Consumer Deceased
-	AssociationCodeConsumerDeceased = "X"
+	ECOACodeConsumerDeceased = "X"
 	// Association Code Delete
-	AssociationCodeDelete = "Z"
+	ECOACodeDelete = "Z"
 	// ECOA Code Z
 	ECOACodeZ = "Z"
 )
